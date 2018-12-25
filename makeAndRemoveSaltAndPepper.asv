@@ -2,6 +2,9 @@ clc;
 clear all;
 close all;
 
+%create waitbar
+f = waitbar(0,'Please wait...'); % default = false
+
 vidFile = '1New1.mp4';
 
 vidObj = VideoReader(vidFile);
@@ -25,6 +28,9 @@ vidHeight = vidObj.Height;
 % Read one frame at a time until the end of the video is reached
 k = 1;
 while hasFrame(vidObj)
+    %waitbar increase
+    waitbar(k/100,f,'Processing Salt and pepper..... Please wait');
+    
     %histogram processing start
       RGBimg = readFrame(vidObj); %taking frame
       grayImg = rgb2gray(RGBimg); %convert gray
@@ -74,21 +80,25 @@ end
 hf = figure('Name','Original video');
 set(hf,'position',[150 150 vidWidth vidHeight]);
 
-% movie function plays the movie defined by a matrix whose columns are movie frames
- movie(hf,movOriginal,1,vidObj.FrameRate);
- 
 % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
 hf1 = figure('Name','Noisy video');
 set(hf1,'position',[150 150 vidWidth vidHeight]);
+
+% Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
+hf2 = figure('Name','Noise removed video');
+set(hf2,'position',[150 150 vidWidth vidHeight]);
+
+%close the wait bar
+close(f);
+
+% movie function plays the movie defined by a matrix whose columns are movie frames
+ movie(hf,movOriginal,1,vidObj.FrameRate);
  
 %Play the noisy video
  movie(hf1,mov,1,vidObj.FrameRate);
  
- % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
-hf2 = figure('Name','Noise removed video');
-set(hf2,'position',[150 150 vidWidth vidHeight]);
- 
-%Play the noise re video
+
+%Play the noise removed video
  movie(hf2,movNoiseRemoved,1,vidObj.FrameRate);
 
 

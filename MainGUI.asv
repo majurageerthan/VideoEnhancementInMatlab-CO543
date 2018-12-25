@@ -120,9 +120,8 @@ function pushbutton8_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-bVal = str2double(get(handles.txt1,'String'));
-brightness
-MainGUI
+brightnessValstr2num(get(hObject,'String'))
+
 
 
 function txt1_Callback(hObject, eventdata, handles)

@@ -1,24 +1,22 @@
 clc;
 clear all;
 close all;
-
 %create waitbar
 f = waitbar(0,'Please wait...'); % default = false
 
-vidFile = '1New1.mp4';
+vidFile = 'NoiseVideo1.MP4';
 
 vidObj = VideoReader(vidFile);
 % numFrames = vidObj.NumberOfFrames;
 vidWidth = vidObj.Width;
 vidHeight = vidObj.Height;
-vidFrames = vidObj.Duration * vidObj.FrameRate; 
 
 % Create a movie structure array, mov.
 % mov = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),...
 %     'colormap',[]);
 
-  mov = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),...
-     'colormap',[]);
+%   mov = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),...
+%      'colormap',[]);
   movOriginal = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),...
      'colormap',[]);
   movNoiseRemoved = struct('cdata',zeros(vidHeight,vidWidth,3,'uint8'),...
@@ -29,20 +27,18 @@ vidFrames = vidObj.Duration * vidObj.FrameRate;
 % Read one frame at a time until the end of the video is reached
 k = 1;
 while hasFrame(vidObj)
-    %waitbar increase
-    waitbar(k/vidFrames,f,'Processing Salt and pepper..... Please wait');
     
-     %change rgb to gray 
+    %histogram processing start
       RGBimg = readFrame(vidObj); %taking frame
       grayImg = rgb2gray(RGBimg); %convert gray
-      noisyImg = imnoise(grayImg, 'salt & pepper',0.1);  %make noisy frame
+     
     
     %remove salt and pepper noise
     %****************************************************
-    [m,n] = size(noisyImg);
+    [m,n] = size(grayImg);
 
 %     noiseRemovedImg = zeros(m,n);
-    noiseRemovedImg = medfilt2(noisyImg);
+    noiseRemovedImg = medfilt2(grayImg);
     noiseRemovedImg = uint8(noiseRemovedImg);
     
     %Algorithm to run median filter
@@ -67,35 +63,27 @@ while hasFrame(vidObj)
     %******************************************************
     
     %   C = cat(dim, A, B)concatenates the arrays A and B along array the dimension specified by dim. The dim argument must be a real, positive, integer value.
-    finalFrame = cat(3, noisyImg, noisyImg, noisyImg);
+    originalGrayFrame = cat(3, grayImg, grayImg, grayImg);
     finalNoiseRemovedFrame = cat(3, noiseRemovedImg, noiseRemovedImg, noiseRemovedImg);
    
     %histogram processing end
-    mov(k).cdata = finalFrame;
-    movOriginal(k).cdata = RGBimg;
+%     mov(k).cdata = originalGrayFrame;
+    movOriginal(k).cdata = originalGrayFrame;
     movNoiseRemoved(k).cdata = finalNoiseRemovedFrame;
     k = k+1;
 end
-%close the wait bar
-close(f);
 
 % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
 hf = figure('Name','Original video');
-set(hf,'position',[10 300 vidWidth vidHeight]);
+set(hf,'position',[150 150 vidWidth vidHeight]);
 
 % movie function plays the movie defined by a matrix whose columns are movie frames
  movie(hf,movOriginal,1,vidObj.FrameRate);
-
-% Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
-hf1 = figure('Name','Noisy video');
-set(hf1,'position',[500 300 vidWidth vidHeight]);
-
-%Play the noisy video
- movie(hf1,mov,1,vidObj.FrameRate);
+ 
  
 % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
 hf2 = figure('Name','Noise removed video');
-set(hf2,'position',[1000 300 vidWidth vidHeight]);
+set(hf2,'position',[150 150 vidWidth vidHeight]);
  
 %Play the noise removed video
  movie(hf2,movNoiseRemoved,1,vidObj.FrameRate);
