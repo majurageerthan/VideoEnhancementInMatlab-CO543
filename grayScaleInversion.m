@@ -28,7 +28,7 @@ vidFrames = vidObj.Duration * vidObj.FrameRate;
 k = 1;
 while hasFrame(vidObj)
     %waitbar increase
-    waitbar(k/vidFrames,f,'Processing brightness..... Please wait');
+    waitbar(k/vidFrames,f,'Processing Grayscale inversion..... Please wait');
     
     %histogram processing start
       RGBimg = readFrame(vidObj); %taking frame
