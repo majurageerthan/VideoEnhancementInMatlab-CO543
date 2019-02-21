@@ -22,7 +22,7 @@ function varargout = MainGUI(varargin)
 
 % Edit the above text to modify the response to help MainGUI
 
-% Last Modified by GUIDE v2.5 25-Jan-2019 11:57:37
+% Last Modified by GUIDE v2.5 20-Feb-2019 21:12:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -152,5 +152,38 @@ function pushbutton12_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-edgeDetect
+mm = str2double(get(handles.txt2,'String'));
+edgeDetect2
 MainGUI
+
+
+% --- Executes on button press in pushbutton13.
+function pushbutton13_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton13 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+grayScaleInversion
+MainGUI
+
+
+
+function txt2_Callback(hObject, eventdata, handles)
+% hObject    handle to txt2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of txt2 as text
+%        str2double(get(hObject,'String')) returns contents of txt2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function txt2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to txt2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

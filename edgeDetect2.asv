@@ -1,7 +1,7 @@
 % program for edge detection 
 clc; clear all; close all;
 %read an image
-
+%*****************************************************
 
 [filename, pathname, filterindex] = uigetfile( ...
 {  '*.jpg','png (*.jpg)'; ...

@@ -28,18 +28,12 @@ vidFrames = vidObj.Duration * vidObj.FrameRate;
 k = 1;
 while hasFrame(vidObj)
     %waitbar increase
-    waitbar(k/vidFrames,f,'Processing Edge detect..... Please wait');
+    waitbar(k/vidFrames,f,'Processing brightness..... Please wait');
     
     %histogram processing start
       RGBimg = readFrame(vidObj); %taking frame
       grayImg = rgb2gray(RGBimg); %convert gray
-        
-      %real function
-      [~, threshold] = edge(grayImg, 'sobel');
-       fudgeFactor = .5;
-       BWs = edge(grayImg,'sobel', threshold * fudgeFactor);
-       test = rgb2gray(BWs);
-%        figure, imshow(BWs), title('binary gradient mask');
+      invertedImg = 256- grayImg; %histogram function
       
       %testing functions
       %****************************************
@@ -49,7 +43,7 @@ while hasFrame(vidObj)
 
   
 %   C = cat(dim, A, B)concatenates the arrays A and B along array the dimension specified by dim. The dim argument must be a real, positive, integer value.
-    finalFrame = cat(3, BWs, BWs, BWs);
+    finalFrame = cat(3, invertedImg, invertedImg, invertedImg);
    
     %histogram processing end
     mov(k).cdata = finalFrame;
@@ -68,7 +62,7 @@ set(hf,'position',[200 300 vidWidth vidHeight]);
 movie(hf,movOriginal,1,vidObj.FrameRate);
  
 % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
-hf1 = figure('Name','Brightness video');
+hf1 = figure('Name','Grayscale inverted video');
 set(hf1,'position',[700 300 vidWidth vidHeight]);
 
 %Play the original video

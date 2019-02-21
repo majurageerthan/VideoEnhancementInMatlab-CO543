@@ -58,15 +58,27 @@ close(f);
 hf = figure('Name','Original video');
 set(hf,'position',[200 300 vidWidth vidHeight]);
 
-% movie function plays the movie defined by a matrix whose columns are movie frames
-movie(hf,movOriginal,1,vidObj.FrameRate);
+
  
 % Size a figure based on the width and height of the video. Then, play back the movie once at the video frame rate.
 hf1 = figure('Name','Histogram equ video');
 set(hf1,'position',[700 300 vidWidth vidHeight]);
 
-%Play the original video
-movie(hf1,mov,1,vidObj.FrameRate);
+parpool(2);
+parfor i = 1:2
+    if i == 1
+      % movie function plays the movie defined by a matrix whose columns are movie frames
+        movie(hf,movOriginal,1,vidObj.FrameRate);
+    else
+      %Play the original video
+        movie(hf1,mov,1,vidObj.FrameRate)
+    end
+end
+% % movie function plays the movie defined by a matrix whose columns are movie frames
+% movie(hf,movOriginal,1,vidObj.FrameRate);
+% 
+% %Play the original video
+% movie(hf1,mov,1,vidObj.FrameRate);
 
 %close the figures after 3 sec
 pause(3);
